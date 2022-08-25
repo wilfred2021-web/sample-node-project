@@ -54,6 +54,8 @@
         state: present
     - name: Install Expressjs
       command: npm install express
+    - name: Install ejs
+      command: npm install ejs
     # Install all the necessary Node modules for the project,
     # using `npm`.
     - name: Install project dependencies
