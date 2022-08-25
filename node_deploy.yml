@@ -75,6 +75,6 @@
     # The `when` clause identifies if the server is already
     # running. If so, this task is skipped
     - name: Start service
-      command: pm2 start app.js --name "node server"
+      command: pm2 -f start app.js --name "node server"
       args:
         chdir: "{{ dest_path }}"
