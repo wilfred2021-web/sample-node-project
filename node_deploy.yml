@@ -26,15 +26,18 @@
       pip:
         name: docker-py
         state: present
-    # Start the Docker Container
-    # publish the ports - 8080
-    - name: Start the container
-      docker_container:
+    #Pull Docker Image    
+    - name: Pull httpd docker image
+      docker_image:
         name: hariapp
         image: "nrbaskar/hariapp:{{DOCKER_TAG}}"
-        state: started
-        published_ports:
-          - 0.0.0.0:8083:8080
+        tag: latest
+        source: pull
+    #Copy Files
+    - name: Copy website to the host
+      copy:
+        src: ./*
+        dest: /home/ec2-user
     # Install NodeJS library
     # using multiple shell commands
     - name: Ansible shell module multiple commands
