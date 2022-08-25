@@ -45,16 +45,20 @@
     #    dest: "{{ dest_path }}"
     # Install NodeJS library
     # using multiple shell commands
-    - name: Ansible shell module multiple commands
+    - name: Install Nodejs & ExpressJS
       shell: 'curl --silent --location https://rpm.nodesource.com/setup_16.x | bash -'
     - name: Install reqired packages
       yum:
         name: nodejs
         state: present
+    - name: Install Expressjs
+      yum:
+        name: express
+        state: present
     # Install all the necessary Node modules for the project,
     # using `npm`.
     - name: Install project dependencies
-      command: npm install
+      command: sudo npm install
       args:
         chdir: "{{ dest_path }}"
     # Install Forever tool.
