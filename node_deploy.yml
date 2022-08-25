@@ -39,10 +39,10 @@
         state: directory
         dest: "{{ dest_path }}"
     #Copy Files
-    - name: Copy website to the host
-      copy:
-        src: ./
-        dest: "{{ dest_path }}"
+    #- name: Copy website to the host
+    #  copy:
+    #    src: ./
+    #    dest: "{{ dest_path }}"
     # Install NodeJS library
     # using multiple shell commands
     - name: Ansible shell module multiple commands
