@@ -42,7 +42,7 @@
     - name: Install reqired packages
       yum: name={{ item }} state=present
       with_items:
-        -nodejs
+        - nodejs
     # Install all the necessary Node modules for the project,
     # using `npm`.
     - name: Install project dependencies
