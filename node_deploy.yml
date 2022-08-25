@@ -53,9 +53,7 @@
         name: nodejs
         state: present
     - name: Install Expressjs
-      command: npm install express
-    - name: Install ejs
-      command: npm install ejs
+      command: sudo npm install express
     # Install all the necessary Node modules for the project,
     # using `npm`.
     - name: Install project dependencies
@@ -69,14 +67,17 @@
       npm: name=pm2 global=yes state=present
     # is already running (avoids restarting the service on each playbook
     # execution)
-    - name: Get pm2 service list
+    - name: Get Forever's list of running processes
       command: pm2 status
       register: pm2_status
       changed_when: false
+    #delete the already running service in PM2
+    - name: Delete the PM2 Running service
+      command: pm2 delete "{{DOCKER_TAG}}-Service"
     # Start the node server using "Foverer"
     # The `when` clause identifies if the server is already
     # running. If so, this task is skipped
     - name: Start service
-      command: pm2 -f start app.js --name "node-server"
+      command: pm2 start app.js --name "{{DOCKER_TAG}}-Service"
       args:
         chdir: "{{ dest_path }}"
