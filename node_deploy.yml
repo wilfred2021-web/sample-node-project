@@ -51,8 +51,6 @@
       yum:
         name: nodejs
         state: present
-      args:
-        warn: false
     # Install all the necessary Node modules for the project,
     # using `npm`.
     - name: Install project dependencies
