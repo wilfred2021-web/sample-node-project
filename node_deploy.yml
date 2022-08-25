@@ -48,9 +48,9 @@
     - name: Ansible shell module multiple commands
       shell: 'curl --silent --location https://rpm.nodesource.com/setup_16.x | bash -'
     - name: Install reqired packages
-      yum: name={{ item }} state=present
-      with_items:
-        - nodejs
+      yum:
+        name: nodejs
+        state: present
       args:
         warn: false
     # Install all the necessary Node modules for the project,
