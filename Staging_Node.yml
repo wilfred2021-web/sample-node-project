@@ -1,0 +1,91 @@
+---
+- name: Staging server Deployment
+- hosts: dockerhost
+  remote_user: root
+  become: True
+  vars:
+    repo_path: nrbaskar/hariapp:{{DOCKER_TAG}}
+  tasks:
+    # Install python pip
+    - name: Install python pip
+      yum:
+        name: python-pip
+        state: present
+    # Install docker service 
+    - name: Install docker
+      yum:
+        name: docker
+        state: present
+    # Start the docker service
+    - name: start docker
+      service:
+        name: docker
+        state: started
+        enabled: yes
+    # Install docker-python Module
+    - name: Install docker-py python module
+      pip:
+        name: docker-py
+        state: present
+    # Start the Docker Container
+    # publish the ports - 8080
+    - name: Start the container
+      docker_container:
+        name: hariapp
+        image: "nrbaskar/hariapp:{{DOCKER_TAG}}"
+        state: started
+        published_ports:
+          - 0.0.0.0:8083:8080
+    # update the latest packages in server & update the cache
+    - name: Run the equivalent of "apt-get update"
+      apt:
+        update_cache: yes
+    # Install NodeJS library
+    # using multiple shell commands
+    - name: Ansible shell module multiple commands
+      shell: 'curl -fsSL https://deb.nodesource.com/setup_14.x | sudo -E bash -'
+    - name: Install reqired packages
+      apt: name={{ item }} state=present
+      with_items:
+        - curl
+        - wget
+        - nginx
+        - nodejs
+    # Install all the necessary Node modules for the project,
+    # using `npm`.
+    - name: Install project dependencies
+      command: npm install
+      args:
+        chdir: "{{ repo_path }}"
+    # Install Forever tool.
+    # This tool is used to run the Node server in background
+    # and keep tracking of the running process
+    - name: Install Forever
+      npm: name=forever global=yes state=present
+    # is already running (avoids restarting the service on each playbook
+    # execution)
+    - name: Get Forever's list of running processes
+      command: forever list
+      register: forever_list
+      changed_when: false
+    # If Nodejs application need build using this section
+    # using `npm run build`.
+    - name: Build node.js application
+      command: npm run build
+      args:
+        chdir: "{{ repo_path }}"
+    # Move the build code in server dist path
+    # using `copy functionality`.
+    - name: Copy folder to /var/www
+      copy:
+        src: "{{ repo_path }}/build"
+        dest: /var/www
+        remote_src: no
+    # Start the node server using "Foverer"
+    # The `when` clause identifies if the server is already
+    # running. If so, this task is skipped
+    - name: Start service
+      command: forever start app.js
+      when: "forever_list.stdout.find('hello-world/index.js') == -1"
+      args:
+        chdir: "{{ repo_path }}"
