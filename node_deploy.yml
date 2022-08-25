@@ -1,6 +1,7 @@
 ---
 - name: Staging server Deployment
   hosts: stageserver
+  become_user: root
   become: True
   vars:
     repo_path: nrbaskar/hariapp:{{DOCKER_TAG}}
@@ -56,7 +57,7 @@
     # Install all the necessary Node modules for the project,
     # using `npm`.
     - name: Install project dependencies
-      command: sudo npm install
+      command: npm install
       args:
         chdir: "{{ dest_path }}"
     # Install Forever tool.
