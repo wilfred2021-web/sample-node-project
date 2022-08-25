@@ -40,10 +40,10 @@
         state: directory
         dest: "{{ dest_path }}"
     #Copy Files
-    #- name: Copy website to the host
-    #  copy:
-    #    src: ./
-    #    dest: "{{ dest_path }}"
+    - name: Copy website to the host
+      copy:
+        src: ./
+        dest: "{{ dest_path }}"
     # Install NodeJS library
     # using multiple shell commands
     - name: Install Nodejs & ExpressJS
@@ -71,9 +71,6 @@
       command: pm2 status
       register: pm2_status
       changed_when: false
-    #delete the already running service in PM2
-    - name: Delete the PM2 Running service
-      command: pm2 delete "{{DOCKER_TAG}}-Service"
     # Start the node server using "Foverer"
     # The `when` clause identifies if the server is already
     # running. If so, this task is skipped
