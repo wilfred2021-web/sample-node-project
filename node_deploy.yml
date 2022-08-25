@@ -4,6 +4,7 @@
   become: True
   vars:
     repo_path: nrbaskar/hariapp:{{DOCKER_TAG}}
+    dest_path: /home/ec2-user/{{DOCKER_TAG}}
   tasks:
     # Install python pip
     - name: Install python pip
@@ -32,11 +33,16 @@
         name: nrbaskar/hariapp
         tag: "{{DOCKER_TAG}}"
         source: pull
+    #Create a Directory
+    - name: create directory
+      file:
+        state: directory
+        dest: "{{ dest_path }}"
     #Copy Files
     - name: Copy website to the host
       copy:
         src: ./
-        dest: /home/ec2-user
+        dest: {{ dest_path }}
     # Install NodeJS library
     # using multiple shell commands
     - name: Ansible shell module multiple commands
@@ -45,12 +51,14 @@
       yum: name={{ item }} state=present
       with_items:
         - nodejs
+      args:
+        warn: false
     # Install all the necessary Node modules for the project,
     # using `npm`.
     - name: Install project dependencies
       command: npm install
       args:
-        chdir: "{{ repo_path }}"
+        chdir: "{{ dest_path }}"
     # Install Forever tool.
     # This tool is used to run the Node server in background
     # and keep tracking of the running process
@@ -67,6 +75,6 @@
     # running. If so, this task is skipped
     - name: Start service
       command: forever start app.js
-      when: "forever_list.stdout.find('sample-node-project/app.js') == -1"
+      when: "forever_list.stdout.find('app.js') == -1"
       args:
-        chdir: "{{ repo_path }}"
+        chdir: "{{ dest_path }}"
