@@ -1,7 +1,6 @@
 ---
 - name: Staging server Deployment
 - hosts: dockerhost
-  remote_user: root
   become: True
   vars:
     repo_path: nrbaskar/hariapp:{{DOCKER_TAG}}
@@ -86,6 +85,6 @@
     # running. If so, this task is skipped
     - name: Start service
       command: forever start app.js
-      when: "forever_list.stdout.find('hello-world/index.js') == -1"
+      when: "forever_list.stdout.find('hello-world/app.js') == -1"
       args:
         chdir: "{{ repo_path }}"
