@@ -42,7 +42,7 @@
     - name: Copy website to the host
       copy:
         src: ./
-        dest: {{ dest_path }}
+        dest: "{{ dest_path }}"
     # Install NodeJS library
     # using multiple shell commands
     - name: Ansible shell module multiple commands
