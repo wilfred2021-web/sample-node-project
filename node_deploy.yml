@@ -1,6 +1,7 @@
 ---
 - name: Staging server Deployment
-- hosts: localhost
+- hosts: stageserver
+  remote_user: root
   become: True
   vars:
     repo_path: nrbaskar/hariapp:{{DOCKER_TAG}}
