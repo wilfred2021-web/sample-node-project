@@ -52,9 +52,7 @@
         name: nodejs
         state: present
     - name: Install Expressjs
-      yum:
-        name: express
-        state: present
+      command: sudo npm install express
     # Install all the necessary Node modules for the project,
     # using `npm`.
     - name: Install project dependencies
