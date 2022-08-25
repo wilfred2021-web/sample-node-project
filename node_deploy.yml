@@ -61,18 +61,17 @@
     # This tool is used to run the Node server in background
     # and keep tracking of the running process
     - name: Install Forever
-      npm: name=forever global=yes state=present
+      npm: name=pm2 global=yes state=present
     # is already running (avoids restarting the service on each playbook
     # execution)
     - name: Get Forever's list of running processes
-      command: forever list
-      register: forever_list
+      command: pm2 status
+      register: pm2_status
       changed_when: false
     # Start the node server using "Foverer"
     # The `when` clause identifies if the server is already
     # running. If so, this task is skipped
     - name: Start service
-      command: forever start app.js
-      when: "forever_list.stdout.find('app.js') == -1"
+      command: pm2 start app.js --name "node server"
       args:
         chdir: "{{ dest_path }}"
