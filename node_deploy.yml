@@ -1,6 +1,6 @@
 ---
 - name: Staging server Deployment
-- hosts: dockerhost
+- hosts: all
   become: True
   vars:
     repo_path: nrbaskar/hariapp:{{DOCKER_TAG}}
