@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+    ...
     "sonar": "node sonar-project.js"
   },
   "author": "Adem Cemil YALCIN",
