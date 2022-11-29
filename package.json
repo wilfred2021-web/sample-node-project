@@ -4,7 +4,7 @@
   "description": "Sample Node.js Project",
   "main": "app.js",
   "scripts": {
-  "sonar": "node sonar-project.js"
+  "sonar": "node sonar-project.js",
   "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Adem Cemil YALCIN",
