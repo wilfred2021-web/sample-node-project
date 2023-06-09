@@ -5,13 +5,13 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "sonar": "node sonar-project.js" 
+    "sonar": "node sonar-project.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Adem Cemil YALCIN",
   "license": "ISC",
   "dependencies": {
-    "express":"latest",
-    "ejs":"latest"
+    "express": "latest",
+    "ejs": "latest"
   }
 }
